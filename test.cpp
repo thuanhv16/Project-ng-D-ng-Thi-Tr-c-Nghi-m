@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <string>
 #include <chrono>
 #include <cctype>   // cho hàm toupper
@@ -11,44 +10,52 @@ using namespace std::chrono;
 // Cấu trúc lưu trữ thông tin một câu hỏi
 struct Question {
     string content;             // Nội dung câu hỏi
-    vector<string> options;     // Các phương án (A, B, C, D)
+    string options[4];          // Các phương án (A, B, C, D)
     char correctAnswer;         // Đáp án đúng (chữ in hoa: A, B, C, D)
 };
 
 // Hàm đọc danh sách câu hỏi từ file
-vector<Question> readQuestionsFromFile(const string& filename) {
-    vector<Question> questions;
+Question* readQuestionsFromFile(const string& filename, int& questionCount) {
     ifstream file(filename);
-
     if (!file) {
         cerr << "Không thể mở file: " << filename << endl;
-        return questions;
+        return nullptr;
     }
 
-    while (!file.eof()) {
-        Question q;
-        string line;
-
-        // Đọc nội dung câu hỏi
-        if (!getline(file, line))
-            break;
-        // Nếu dòng trống thì bỏ qua (để linh hoạt với file có dòng trống)
-        if (line.empty()) continue;
-        q.content = line;
-
-        // Đọc 4 dòng phương án: A, B, C, D
-        for (int i = 0; i < 4; i++) {
-            if (!getline(file, line)) break;
-            q.options.push_back(line);
-        }
-
-        // Đọc đáp án đúng
-        if (!getline(file, line)) break;
+    int count = 0;
+    string line;
+    // Đếm số câu hỏi đầu tiên (dựa trên các dòng không trống)
+    while (getline(file, line)) {
         if (!line.empty()) {
-            q.correctAnswer = toupper(line[0]);
+            count++;
+            // Chuyển tiếp các dòng với đáp án
+            file.ignore(numeric_limits<streamsize>::max(), '\n');
+            file.ignore(numeric_limits<streamsize>::max(), '\n');
+            file.ignore(numeric_limits<streamsize>::max(), '\n');
+            file.ignore(numeric_limits<streamsize>::max(), '\n');
+            file.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+
+    // Quay lại đầu file
+    file.clear();
+    file.seekg(0);
+
+    Question* questions = new Question[count];
+    questionCount = count;
+
+    for (int i = 0; i < count; i++) {
+        Question& q = questions[i];
+        if (!getline(file, q.content)) break;
+
+        for (int j = 0; j < 4; j++) {
+            if (!getline(file, q.options[j])) break;
         }
 
-        questions.push_back(q);
+        string answerLine;
+        if (getline(file, answerLine)) {
+            q.correctAnswer = toupper(answerLine[0]);
+        }
     }
 
     file.close();
@@ -58,8 +65,8 @@ vector<Question> readQuestionsFromFile(const string& filename) {
 // Hàm hiển thị một câu hỏi và các lựa chọn của nó
 void displayQuestion(const Question& q, int index, char currentAnswer) {
     cout << "\nCâu " << index + 1 << ": " << q.content << "\n";
-    for (const auto& option : q.options) {
-        cout << option << "\n";
+    for (int i = 0; i < 4; i++) {
+        cout << q.options[i] << "\n";
     }
     if (currentAnswer == ' ') {
         cout << "Đáp án hiện tại: (chưa trả lời)\n";
@@ -82,21 +89,26 @@ int main() {
 
     // Đọc danh sách câu hỏi từ file
     string filename = "questions.txt";
-    vector<Question> questions = readQuestionsFromFile(filename);
+    int questionCount;
+    Question* questions = readQuestionsFromFile(filename, questionCount);
 
-    if (questions.empty()) {
+    if (!questions || questionCount <= 0) {
         cout << "Không có câu hỏi trong file hoặc lỗi đọc file.\n";
+        delete[] questions;
         return 1;
     }
 
-    // Tạo vector lưu đáp án của thí sinh, khởi tạo là ký tự khoảng trắng
-    vector<char> candidateAnswers(questions.size(), ' ');
+    // Tạo mảng lưu đáp án của thí sinh, khởi tạo là ký tự khoảng trắng
+    char* candidateAnswers = new char[questionCount];
+    for (int i = 0; i < questionCount; i++) {
+        candidateAnswers[i] = ' ';
+    }
 
     // Bắt đầu tính thời gian làm bài
     auto startTime = high_resolution_clock::now();
 
     // Vòng lặp duyệt qua các câu hỏi
-    for (size_t i = 0; i < questions.size(); i++) {
+    for (int i = 0; i < questionCount; i++) {
         char ans;
         bool validInput = false;
         do {
@@ -124,7 +136,7 @@ int main() {
     string choice;
     getline(cin, choice);
     if (!choice.empty() && toupper(choice[0]) == 'Y') {
-        for (size_t i = 0; i < questions.size(); i++) {
+        for (int i = 0; i < questionCount; i++) {
             // Nếu chưa trả lời hoặc muốn thay đổi, thí sinh có thể nhập lại
             cout << "\nCâu hỏi số " << i + 1 << ":\n";
             displayQuestion(questions[i], i, candidateAnswers[i]);
@@ -136,7 +148,7 @@ int main() {
                 if (newAns == 'A' || newAns == 'B' || newAns == 'C' || newAns == 'D') {
                     candidateAnswers[i] = newAns;
                 } else {
-                    cout << "Không thay đổi đáp án cho câu hỏi " << i+1 << ".\n";
+                    cout << "Không thay đổi đáp án cho câu hỏi " << i + 1 << ".\n";
                 }
             }
         }
@@ -148,7 +160,7 @@ int main() {
 
     // Tính toán kết quả
     int correctCount = 0;
-    for (size_t i = 0; i < questions.size(); i++) {
+    for (int i = 0; i < questionCount; i++) {
         if (candidateAnswers[i] == questions[i].correctAnswer)
             correctCount++;
     }
@@ -157,16 +169,21 @@ int main() {
     cout << "\n===== KẾT QUẢ THI =====\n";
     cout << "Họ tên: " << fullName << "\n";
     cout << "Số báo danh: " << candidateID << "\n";
-    cout << "Số câu đúng: " << correctCount << " / " << questions.size() << "\n";
+    cout << "Số câu đúng: " << correctCount << " / " << questionCount << "\n";
     cout << "Thời gian làm bài: " << duration.count() << " giây\n";
 
     // Nếu muốn, hiển thị chi tiết các câu hỏi và đáp án
     cout << "\nChi tiết đáp án:\n";
-    for (size_t i = 0; i < questions.size(); i++) {
-        cout << "Câu " << i + 1 << ": Đáp án của bạn: " << (candidateAnswers[i]==' ' ? "Chưa trả lời" : string(1, candidateAnswers[i]))
+    for (int i = 0; i < questionCount; i++) {
+        cout << "Câu " << i + 1 << ": Đáp án của bạn: " << (candidateAnswers[i] == ' ' ? "Chưa trả lời" : string(1, candidateAnswers[i]))
              << " | Đáp án đúng: " << questions[i].correctAnswer << "\n";
     }
 
     cout << "\nCảm ơn bạn đã tham gia thi!\n";
+
+    // Giải phóng bộ nhớ
+    delete[] questions;
+    delete[] candidateAnswers;
+
     return 0;
 }
