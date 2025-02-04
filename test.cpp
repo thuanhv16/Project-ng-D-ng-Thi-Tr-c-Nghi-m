@@ -19,38 +19,38 @@ struct Question {
 vector<Question> readQuestionsFromFile(const string& filename) {
     vector<Question> questions;
     ifstream file(filename);
-    
+
     if (!file) {
         cerr << "Không thể mở file: " << filename << endl;
         return questions;
     }
-    
+
     while (!file.eof()) {
         Question q;
         string line;
-        
+
         // Đọc nội dung câu hỏi
         if (!getline(file, line))
             break;
         // Nếu dòng trống thì bỏ qua (để linh hoạt với file có dòng trống)
         if (line.empty()) continue;
         q.content = line;
-        
+
         // Đọc 4 dòng phương án: A, B, C, D
         for (int i = 0; i < 4; i++) {
             if (!getline(file, line)) break;
             q.options.push_back(line);
         }
-        
+
         // Đọc đáp án đúng
         if (!getline(file, line)) break;
         if (!line.empty()) {
             q.correctAnswer = toupper(line[0]);
         }
-        
+
         questions.push_back(q);
     }
-    
+
     file.close();
     return questions;
 }
@@ -73,28 +73,28 @@ int main() {
     // Nhập thông tin thí sinh
     string fullName;
     string candidateID;
-    
+
     cout << "===== CHƯƠNG TRÌNH THI TRẮC NGHIỆM =====\n";
     cout << "Nhập họ tên: ";
     getline(cin, fullName);
     cout << "Nhập số báo danh: ";
     getline(cin, candidateID);
-    
+
     // Đọc danh sách câu hỏi từ file
     string filename = "questions.txt";
     vector<Question> questions = readQuestionsFromFile(filename);
-    
+
     if (questions.empty()) {
         cout << "Không có câu hỏi trong file hoặc lỗi đọc file.\n";
         return 1;
     }
-    
+
     // Tạo vector lưu đáp án của thí sinh, khởi tạo là ký tự khoảng trắng
     vector<char> candidateAnswers(questions.size(), ' ');
-    
+
     // Bắt đầu tính thời gian làm bài
     auto startTime = high_resolution_clock::now();
-    
+
     // Vòng lặp duyệt qua các câu hỏi
     for (size_t i = 0; i < questions.size(); i++) {
         char ans;
@@ -104,7 +104,7 @@ int main() {
             string input;
             getline(cin, input);
             if (input.empty()) continue;
-            
+
             ans = toupper(input[0]);
             // Nếu nhập S: bỏ qua (skip)
             if (ans == 'S') {
@@ -118,7 +118,7 @@ int main() {
             }
         } while (!validInput);
     }
-    
+
     // Cho phép thí sinh duyệt lại các câu hỏi chưa trả lời hoặc muốn thay đổi đáp án
     cout << "\nBạn có muốn xem lại và thay đổi đáp án các câu hỏi chưa trả lời hay không? (Y/N): ";
     string choice;
@@ -141,32 +141,32 @@ int main() {
             }
         }
     }
-    
+
     // Kết thúc tính thời gian làm bài
     auto endTime = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(endTime - startTime);
-    
+
     // Tính toán kết quả
     int correctCount = 0;
     for (size_t i = 0; i < questions.size(); i++) {
         if (candidateAnswers[i] == questions[i].correctAnswer)
             correctCount++;
     }
-    
+
     // Hiển thị kết quả bài thi
     cout << "\n===== KẾT QUẢ THI =====\n";
     cout << "Họ tên: " << fullName << "\n";
     cout << "Số báo danh: " << candidateID << "\n";
     cout << "Số câu đúng: " << correctCount << " / " << questions.size() << "\n";
     cout << "Thời gian làm bài: " << duration.count() << " giây\n";
-    
+
     // Nếu muốn, hiển thị chi tiết các câu hỏi và đáp án
     cout << "\nChi tiết đáp án:\n";
     for (size_t i = 0; i < questions.size(); i++) {
         cout << "Câu " << i + 1 << ": Đáp án của bạn: " << (candidateAnswers[i]==' ' ? "Chưa trả lời" : string(1, candidateAnswers[i]))
              << " | Đáp án đúng: " << questions[i].correctAnswer << "\n";
     }
-    
+
     cout << "\nCảm ơn bạn đã tham gia thi!\n";
     return 0;
 }
