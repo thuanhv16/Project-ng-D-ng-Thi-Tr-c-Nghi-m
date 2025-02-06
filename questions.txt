@@ -1,41 +1,41 @@
-Ai la vi vua dau tien cua nha Ly?
-A. Ly Cong Uan
-B. Ly Thanh Tong
-C. Ly Thai To
-D. Ly Nhan Tong
-Đáp án đúng A  
+Trong cấu trúc chương trình C++, lệnh #include dùng để làm gì?
+A. Thông báo trong chương trình sử dụng các lệnh tính toán, thông báo các biến sử dụng trong thân chương trình.
+B. Khai báo các câu lệnh được sử dụng trong chương trình. Phải tạo các câu lệnh trước thì mới sử dụng được trong chương trình C++.
+C. Thông báo cho bộ tiền biên dịch thêm các thư viện chuẩn trong C++. Các lệnh được sử dụng trong thân chương trình phải có prototype nằm trong các thư viện chuẩn này.
+D. Không có đáp án đúng.
+C
 
-5 + 7 = ?
-A. 10
-B. 12
-C. 13
-D. 14
-Đáp án đúng B  
+Trong cấu trúc chương trình C++ có bao nhiêu hàm main()?
+A. 1
+B. 2
+C. 3
+D. 4
+A
 
-Vietnam co bao nhieu tinh thanh?
-A. 58
-B. 63
-C. 64
-D. 65
-Đáp án đúng B  
+Lệnh cout trong C++ có tác dụng gì?
+A. Là stream đầu ra chuẩn trong C++.
+B. Là lệnh chú thích trong C++
+C. Là stream đầu vào chuẩn của C++.
+D. Là lệnh khai báo một biến.
+A
 
-Loai nao thuoc lop thu?
-A. Ca heo
-B. Chim canh cut
-C. Ran
-D. Ech
-Đáp án đúng A  
+Lệnh cin trong C++ có tác dụng gì?
+A. Là lệnh chú thích trong C++
+B. Là lệnh khai báo một biến.
+C. Là stream đầu ra chuẩn trong C++.
+D. Là stream đầu vào chuẩn của C++
+D
 
-Tac pham 'Truyen Kieu' duoc viet bang chu gi?
-A. Chu Nom
-B. Chu Han
-C. Chu Quoc ngu
-D. Chu Phan
-Đáp án đúng A  
+Kết thúc một dòng lệnh trong chương trình C++, ta sử dụng ký hiệu gì?
+A. Dấu ,
+B. Dấu .
+C. Dấu :
+D. Dấu ;
+D
 
-Nguyen to nao chiem 21% khoi khi trong khong khi?
-A. Oxi
-B. Nito
-C. Hydro
-D. CO2
-Đáp án đúng A  
+Lệnh cout trong C++ đi kèm với cặp dấu nào?
+A. >>
+B. \\
+C. ||
+D. <<
+D
