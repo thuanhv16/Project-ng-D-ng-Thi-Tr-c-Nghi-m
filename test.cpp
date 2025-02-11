@@ -3,14 +3,15 @@
 #include <string>
 #include <chrono>
 
+
 using namespace std;
 using namespace std::chrono;
 
 
 struct Question {
-    string content;            
+    string content;             
     string options[4];          
-    char correctAnswer;         
+    char correctAnswer;       
 };
 
 
@@ -22,7 +23,7 @@ char toUpper(char c) {
 }
 
 
-void displayQuestion(const Question& q, int index, char currentAnswer) {
+void ManhinhQuestion(const Question& q, int index, char currentAnswer) {
     cout << "\nCâu " << index + 1 << ": " << q.content << "\n";
     for (int i = 0; i < 4; i++) {
         cout << q.options[i] << "\n";
@@ -36,7 +37,7 @@ void displayQuestion(const Question& q, int index, char currentAnswer) {
 }
 
 
-Question* readQuestionsFromFile(const string& filename, int& questionCount) {
+Question* ĐocCauTrucCau(const string& filename, int& questionCount) {
     ifstream file(filename);
     if (!file) {
         cerr << "Không thể mở file: " << filename << endl;
@@ -75,7 +76,7 @@ Question* readQuestionsFromFile(const string& filename, int& questionCount) {
 
         string answerLine;
         if (getline(file, answerLine)) {
-            
+           
             q.correctAnswer = toUpper(answerLine[0]);
         }
     }
@@ -87,7 +88,7 @@ Question* readQuestionsFromFile(const string& filename, int& questionCount) {
 
 
 int main() {
-   
+    
     string fullName;
     string candidateID;
 
@@ -100,7 +101,7 @@ int main() {
     
     string filename = "questions.txt";
     int questionCount;
-    Question* questions = readQuestionsFromFile(filename, questionCount);
+    Question* questions = ĐocCauTrucCau(filename, questionCount);
 
     if (!questions || questionCount <= 0) {
         cout << "Không có câu hỏi trong file hoặc lỗi đọc file.\n";
@@ -122,16 +123,16 @@ int main() {
         char ans;
         bool validInput = false;
         do {
-            displayQuestion(questions[i], i, candidateAnswers[i]);
+            ManhinhQuestion(questions[i], i, candidateAnswers[i]);
             string input;
             getline(cin, input);
             if (input.empty()) continue;
 
             
             ans = toUpper(input[0]);
-           
+            
             if (ans == 'S') {
-                candidateAnswers[i] = ' ';  
+                candidateAnswers[i] = ' '; 
                 validInput = true;
             } else if (ans == 'A' || ans == 'B' || ans == 'C' || ans == 'D') {
                 candidateAnswers[i] = ans;
@@ -142,15 +143,15 @@ int main() {
         } while (!validInput);
     }
 
-    
+   
     cout << "\nBạn có muốn xem lại và thay đổi đáp án các câu hỏi chưa trả lời hay không? (Y/N): ";
     string choice;
     getline(cin, choice);
     if (!choice.empty() && toUpper(choice[0]) == 'Y') {
         for (int i = 0; i < questionCount; i++) {
-           
+            
             cout << "\nCâu hỏi số " << i + 1 << ":\n";
-            displayQuestion(questions[i], i, candidateAnswers[i]);
+            ManhinhQuestion(questions[i], i, candidateAnswers[i]);
             cout << "Nhập đáp án (A, B, C, D) hoặc nhấn Enter để giữ nguyên: ";
             string input;
             getline(cin, input);
@@ -165,18 +166,18 @@ int main() {
         }
     }
 
-   
+    
     auto endTime = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(endTime - startTime);
 
-  
+    
     int correctCount = 0;
     for (int i = 0; i < questionCount; i++) {
         if (candidateAnswers[i] == questions[i].correctAnswer)
             correctCount++;
     }
 
-   
+    
     cout << "\n===== KẾT QUẢ THI =====\n";
     cout << "Họ tên: " << fullName << "\n";
     cout << "Số báo danh: " << candidateID << "\n";
@@ -192,7 +193,7 @@ int main() {
 
     cout << "\nCảm ơn bạn đã tham gia thi!\n";
 
-   
+    
     delete[] questions;
     delete[] candidateAnswers;
 
