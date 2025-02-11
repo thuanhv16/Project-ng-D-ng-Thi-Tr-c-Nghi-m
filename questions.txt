@@ -1,41 +1,54 @@
-Trong cấu trúc chương trình C++, lệnh #include dùng để làm gì?
-A. Thông báo trong chương trình sử dụng các lệnh tính toán, thông báo các biến sử dụng trong thân chương trình.
-B. Khai báo các câu lệnh được sử dụng trong chương trình. Phải tạo các câu lệnh trước thì mới sử dụng được trong chương trình C++.
-C. Thông báo cho bộ tiền biên dịch thêm các thư viện chuẩn trong C++. Các lệnh được sử dụng trong thân chương trình phải có prototype nằm trong các thư viện chuẩn này.
-D. Không có đáp án đúng.
+Trong C++, từ khóa nào dùng để khai báo một biến?
+A. var
+B. int
+C. string
+D. New
+B
+Hàm nào là hàm chính trong chương trình C++?
+A. main()
+B. start()
+C. run()
+D. init()
+A
+Lệnh nào dùng để nhập dữ liệu từ bàn phím trong C++?
+A. cin
+B. cout
+C. scanf
+D. input
+A
+Kiểu dữ liệu nào dùng để lưu trữ số thực trong C++?
+A. int
+B. float
+C. char
+D. bool
+B
+Vòng lặp nào sau đây là vòng lặp vô hạn?
+A. for (int i = 0; i < 10; i++)
+B. while (true)
+C. do { ... } while (false)
+D. for (int i = 0; i > 0; i++)
+B
+Lệnh nào dùng để kết thúc chương trình C++?
+A. exit()
+B. return 0;
+C. break;
+D. stop();
+B
+Trong C++, toán tử nào dùng để so sánh bằng?
+A. =
+B. ==
+C. ===
+D. !=
+B
+Trong C++, từ khóa nào dùng để định nghĩa một hàm?
+A. function
+B. def
+C. void
+D. int
+C,D
+Trong C++, câu lệnh điều kiện nào sau đây là đúng?
+A. if x == 5
+B. if (x = 5)
+C. if (x == 5)
+D. if [x == 5]
 C
-
-Trong cấu trúc chương trình C++ có bao nhiêu hàm main()?
-A. 1
-B. 2
-C. 3
-D. 4
-A
-
-Lệnh cout trong C++ có tác dụng gì?
-A. Là stream đầu ra chuẩn trong C++.
-B. Là lệnh chú thích trong C++
-C. Là stream đầu vào chuẩn của C++.
-D. Là lệnh khai báo một biến.
-A
-
-Lệnh cin trong C++ có tác dụng gì?
-A. Là lệnh chú thích trong C++
-B. Là lệnh khai báo một biến.
-C. Là stream đầu ra chuẩn trong C++.
-D. Là stream đầu vào chuẩn của C++
-D
-
-Kết thúc một dòng lệnh trong chương trình C++, ta sử dụng ký hiệu gì?
-A. Dấu ,
-B. Dấu .
-C. Dấu :
-D. Dấu ;
-D
-
-Lệnh cout trong C++ đi kèm với cặp dấu nào?
-A. >>
-B. \\
-C. ||
-D. <<
-D
